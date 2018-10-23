@@ -1,8 +1,8 @@
 package com.framework.io;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 /****
  * *
@@ -18,20 +18,40 @@ import java.io.IOException;
 public class StringWriteFile {
 	
 	/***
+	 * 将信息写入到文件中，指定文件
+	 * @param file
+	 * @param info
+	 * @return
+	 */
+	public static boolean writerToFile( String info) {
+		return writerTo( new File("D:/123.txt") , info );
+	}
+	
+	/***
 	 * 将信息写入到文件中
 	 * @param file
 	 * @param info
 	 * @return
 	 */
 	public static boolean writerTo(File file, String info) {
-		FileWriter filew;
+		FileWriter fileWrite;
 		try {
-			filew = new FileWriter(file); 	// 新建一个FileWriter
-			filew.write(info); 				// 将字符串写入到指定的路径下的文件中
-			filew.close();
+			fileWrite = new FileWriter(file , true ); 	// 新建一个FileWriter,并且配置成追加写入
+			/*fileWrite.write(info); 				// 将字符串写入到指定的路径下的文件中
+			fileWrite.close();*/
 		} catch (IOException e) {
 			return false;
 		}
+		PrintWriter printWriter = new PrintWriter( fileWrite ); 
+		printWriter.println( info ); 
+		printWriter.flush(); 
+		try { 
+			fileWrite.flush(); 
+			printWriter.close(); 
+			fileWrite.close(); 
+		} catch (IOException e) { 
+		e.printStackTrace(); 
+		} 
 		return true;
 	}
 
